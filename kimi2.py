@@ -380,7 +380,7 @@ def run_admin_bot():
             time.sleep(2)
 
 # ==================================================
-# 7. STARTUP
+# 7. STARTUP (Modern Python 3.11+ Compatible)
 # ==================================================
 async def periodic_reload():
     while True:
@@ -390,6 +390,10 @@ async def periodic_reload():
 async def main():
     global BOT_ENTITY, _admin_ok
     load_config()
+    
+    # ✅ راه‌اندازی کلاینت در داخل حلقه async (جلوگیری از خطای Event Loop)
+    await client.start()
+    print("[INIT] ✅ Client connected successfully")
     
     BOT_ENTITY = await client.get_entity(BOT_ID)
     await client.get_entity(CHANNEL)
@@ -402,8 +406,11 @@ async def main():
         print("[INIT] Admin panel started")
 
     print("[INIT] 🔥 SECURE CLOUD MODE ACTIVATED 🔥")
+    
+    # نگه‌داشتن برنامه در حالت اجرا
     await client.run_until_disconnected()
 
 if __name__ == '__main__':
-    client.start()
-    client.loop.run_until_complete(main())
+    # ✅ روش استاندارد و امن اجرای کد async در پایتون مدرن
+    import asyncio
+    asyncio.run(main())
